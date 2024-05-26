@@ -21,6 +21,13 @@ typedef struct {
     char domain[255];
 } DomainCounter;
 
+typedef struct TreeItem {
+    int level;
+    int value;
+    int type;
+    int idx;
+} TreeItem;
+
 int compareDomainCounterNames(const void *domainCounterPtr1, const void *domainCounterPtr2);
 
 int compareInts1(const void *intPtr1, const void *intPtr2);
@@ -48,5 +55,9 @@ int submatricesNum(matrix *m);
 DomainCounter *subdomainVisits(char **cpdomains, int cpdomainsSize, int *returnSize);
 
 char* minStringNum(char *pattern);
+
+vectorVoid maxThree(int *nums, int len);
+
+void strShuffle(char *s, int indices);
 
 #endif //UNTITLED28_THREAD_IO_H
