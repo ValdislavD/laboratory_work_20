@@ -349,29 +349,35 @@ vectorVoid showVisitStats(char *stats) {
     return group;
 }
 
-int submatricesNum(int *matrix, int n, int m) {
-    int (*tempMatrix)[m] = (int (*)[m]) matrix;
+int submatricesNum(matrix *m) {
+    matrix nums = getMemMatrix(m->nRows, m->nCols);
 
-    for (int i = 0; i < n; i++) {
-        int nums[m];
-        for (int k = 0; k < m; k++) {
-            nums[k] = 0;
-        }
-        for (int j = 0; j < m; j++) {
-            if (tempMatrix[i][j] == 0) {
-                nums[j] = 0;
+    int val = 0;
+    for (int i = 0; i < m->nRows; i++) {
+        for (int j = 0; j < m->nCols; j++) {
+            if (m->values[i][j] == 0) {
+                val = 0;
             } else {
                 if (j > 0) {
-                    nums[j] = nums[j - 1] + 1;
+                    val = nums.values[i][j - 1] + 1;
                 } else {
-                    nums[j] += 1;
-                }
+                    val = 1;
             }
         }
-
-        for (int k = 0; k < m; k++) {
-            printf("%d\t", nums[k]);
+            nums.values[i][j] = val;
         }
-        printf("\n");
     }
+    int count = 0;
+    for (int i = 0; i < m->nRows; i++) {
+        for (int j = 0; j < m->nCols; j++) {
+            int minWidth = nums.values[i][j];
+            for (int k = i; k < m->nRows; k++) {
+                if (minWidth > nums.values[k][j]) {
+                    minWidth = nums.values[k][j];
+                }
+                count += minWidth;
+            }
+        }
+    }
+    return count;
 }

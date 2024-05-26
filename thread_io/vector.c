@@ -115,3 +115,18 @@ void getVectorValueV(vectorVoid *vector, size_t index, void *value) {
     char *ptr = (char *)vector->data + index * vector->baseTypeSize;
     memcpy(value, ptr, vector->baseTypeSize);
 }
+
+matrix getMemMatrix(int nRows, int nCols) {
+    int **values = (int **) malloc(sizeof(int*) * nRows);
+    for (int i = 0; i < nRows; i++)
+        values[i] = (int *) calloc(nCols, sizeof(int));
+    return (matrix){values, nRows, nCols};
+}
+
+matrix createMatrixFromArray(const int *a, size_t nRows, size_t nCols) {
+    matrix m = getMemMatrix(nRows, nCols);
+    for (size_t i = 0; i < nRows; ++i) {
+        memcpy(m.values[i], a + i * nCols, nCols * sizeof(int));
+    }
+    return m;
+}

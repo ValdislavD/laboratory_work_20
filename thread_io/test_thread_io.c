@@ -138,15 +138,17 @@ void testAll_submatricesNum() {
     int n = 3;
     int m = 3;
 
-    int matrix[3][3] = {{1,0,1},{1,1,0},{1,1,0}};
+    int test[3][3] = {{1,0,1},{1,1,0},{1,1,0}};
+    matrix newMatrix = createMatrixFromArray(*test, n, m);
 
-    submatricesNum(*matrix, n, m);
+    int res = submatricesNum(&newMatrix);
+    assert(res == 13);
 }
 
 void testThreadAll() {
     testAll_fill_matrix();
     testAll_liveGame();
     testAll_MedianFilter();
-    testAll_showVisitStats();
-    //testAll_submatricesNum();
+    //testAll_showVisitStats();
+    testAll_submatricesNum();
 }

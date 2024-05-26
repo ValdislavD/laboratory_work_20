@@ -43,7 +43,7 @@ void parsedDomainStat(vectorVoid *data, char *start, char *end);
 
 vectorVoid showVisitStats(char *stats);
 
-int submatricesNum(int *matrix, int n, int m);
+int submatricesNum(matrix *m);
 
 DomainCounter *subdomainVisits(char **cpdomains, int cpdomainsSize, int *returnSize);
 
