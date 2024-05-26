@@ -3,7 +3,7 @@ project(untitled28 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(untitled28 task_1-2_4-5_test.c
+add_executable(untitled28 task_1-2_4-5-6_test.c
         thread_io/thread_io.h
         thread_io/thread_io.c
         thread_io/test_thread_io.c

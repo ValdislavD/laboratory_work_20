@@ -381,3 +381,33 @@ int submatricesNum(matrix *m) {
     }
     return count;
 }
+
+char* minStringNum(char *pattern) {
+    int len = strlen(pattern);
+    int num[len + 1];
+
+    for (int i = 0; i < sizeof(num) / sizeof(int); i++) {
+        num[i] = 1;
+    }
+
+    int currentNumber = 2;
+    int lastIIndex = 0;
+    for (int i = 0; i < len; i++) {
+        if (pattern[i] == 'I') {
+            num[i + 1] = currentNumber++;
+            lastIIndex = i + 1;
+        } else {
+            for (int j = i; j >= lastIIndex; j--) {
+                num[j + 1] = num[j];
+            }
+            num[lastIIndex] = currentNumber++;
+        }
+    }
+
+    char* res = (char*)malloc(sizeof(char) * (len + 2));
+    for (int i = 0; i < sizeof(num) / sizeof(int); i++) {
+        res[i] = num[i] + '0';
+    }
+    res[len + 1] = '\0';
+    return res;
+}

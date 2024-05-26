@@ -47,4 +47,6 @@ int submatricesNum(matrix *m);
 
 DomainCounter *subdomainVisits(char **cpdomains, int cpdomainsSize, int *returnSize);
 
+char* minStringNum(char *pattern);
+
 #endif //UNTITLED28_THREAD_IO_H
