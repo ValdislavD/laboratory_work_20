@@ -1,5 +1,12 @@
 #include "thread_io.h"
 
+int compareInts1(const void *intPtr1, const void *intPtr2) {
+    int *num1 = (int *)intPtr1;
+    int *num2 = (int *)intPtr2;
+
+    return *num2 - *num1;
+}
+
 void printMatrix(int *matrix, int n, int m) {
     int (*tempMatrix)[m] = (int (*)[m])matrix;
     for (int i = 0; i < n; i++) {
@@ -114,4 +121,46 @@ void MedianFilter(int *matrix, int n, int m, int filterSize) {
             tempMatrix[i][j] = newMatrix[i][j];
         }
     }
+}
+
+int calculateMedianVector(int *matrix, int max_col, int row, int col, int *arrayOfNums, int filter_size) {
+    int (*tempMatrix)[max_col] = (int (*)[max_col])matrix;
+    int k = 0;
+
+    for (int i = row; i < row + filter_size; i++) {
+        for (int j = col; j < col + filter_size; j++) {
+            arrayOfNums[k++] = tempMatrix[i][j];
+        }
+    }
+    qsort(arrayOfNums, k, sizeof(int), compareInts1);
+    int res = arrayOfNums[((filter_size * filter_size) - 1) / 2];
+
+    return res;
+}
+
+void medianFilter(int *matrix, int filter, int n, int m) {
+    int (*tempMatrix)[m] = (int (*)[m])matrix;
+    int arrayOfNums[filter * filter];
+    int arrOfMedians[filter * filter];
+
+
+    // Calculate median values
+    int value = 0;
+    int i = 0;
+    for (int row = 0; row <= n - filter; row++) {
+        for (int col = 0; col <= m - filter; col++) {
+            value = calculateMedianVector(matrix, m, row, col, arrayOfNums, filter);
+            arrOfMedians[i++] = value;
+        }
+    }
+
+    // Fill median values
+    i = 0;
+    int ofset = (filter - 1) / 2;
+    for (int row = ofset; row <= n - filter + ofset; row++) {
+        for (int col = ofset; col <= m - filter + ofset; col++) {
+            tempMatrix[row][col] = arrOfMedians[i++];
+        }
+    }
+
 }

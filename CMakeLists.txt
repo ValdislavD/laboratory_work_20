@@ -7,4 +7,5 @@ add_executable(untitled28 task_1-2.c
         thread_io/thread_io.h
         thread_io/thread_io.c
         thread_io/test_thread_io.c
+        task_3.c
 )
