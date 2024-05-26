@@ -28,6 +28,8 @@ typedef struct TreeItem {
     int idx;
 } TreeItem;
 
+#define BUFFER_SIZE 1024
+
 int compareDomainCounterNames(const void *domainCounterPtr1, const void *domainCounterPtr2);
 
 int compareInts1(const void *intPtr1, const void *intPtr2);
@@ -58,6 +60,10 @@ char* minStringNum(char *pattern);
 
 vectorVoid maxThree(int *nums, int len);
 
-void strShuffle(char *s, int indices);
+char* strShuffle(char *symbols, int *indices, int len);
+
+size_t fileWithSmallerValues(char *fileInputPath, char *fileOutputPath, int n);
+
+void outputFileInChunks(char *fileInputPath, int n);
 
 #endif //UNTITLED28_THREAD_IO_H
