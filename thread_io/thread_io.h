@@ -3,6 +3,25 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "vector.h"
+
+typedef struct {
+    char *begin;
+    char *end;
+} WordDescriptor;
+
+typedef struct {
+    long counter;
+    WordDescriptor domain;
+} DomainRecord;
+
+typedef struct {
+    long counter;
+    char domain[255];
+} DomainCounter;
+
+int compareDomainCounterNames(const void *domainCounterPtr1, const void *domainCounterPtr2);
 
 int compareInts1(const void *intPtr1, const void *intPtr2);
 
@@ -19,5 +38,13 @@ void MedianFilter(int *matrix, int n, int m, int filterSize);
 int calculateMedianVector(int *matrix, int max_col, int row, int col, int *arrayOfNums, int filter_size);
 
 void medianFilter(int *matrix, int filter, int n, int m);
+
+void parsedDomainStat(vectorVoid *data, char *start, char *end);
+
+vectorVoid showVisitStats(char *stats);
+
+int submatricesNum(int *matrix, int n, int m);
+
+DomainCounter *subdomainVisits(char **cpdomains, int cpdomainsSize, int *returnSize);
 
 #endif //UNTITLED28_THREAD_IO_H

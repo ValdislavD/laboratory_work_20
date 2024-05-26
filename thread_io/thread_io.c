@@ -1,4 +1,33 @@
+#include <ctype.h>
+#include <string.h>
 #include "thread_io.h"
+#include "vector.h"
+
+#define STATS_HEADER "cpdomains = ["
+#define STATS_END "]"
+
+int compareDomainCounterNames(const void *domainCounterPtr1, const void *domainCounterPtr2) {
+    DomainRecord *domainCounter1 = (DomainRecord *)domainCounterPtr1;
+    DomainRecord *domainCounter2 = (DomainRecord *)domainCounterPtr2;
+    WordDescriptor word1 = domainCounter1->domain;
+    WordDescriptor word2 = domainCounter2->domain;
+
+    unsigned long len1 = word1.end - word1.begin;
+    unsigned long len2 = word2.end - word2.begin;
+    unsigned long min_len = len1;
+    if (min_len > len2) {
+        min_len = len2;
+    }
+
+    int res = memcmp(word1.begin, word2.begin, min_len);
+
+    if (res == 0) {
+        if (len1 != len2) {
+            res = len1 > len2 ? 1 : -1;
+        }
+    }
+    return res;
+}
 
 int compareInts1(const void *intPtr1, const void *intPtr2) {
     int *num1 = (int *)intPtr1;
@@ -162,5 +191,187 @@ void medianFilter(int *matrix, int filter, int n, int m) {
             tempMatrix[row][col] = arrOfMedians[i++];
         }
     }
+}
 
+int compareDomainCounters(const void *a, const void *b) {
+    return strcmp(((DomainCounter *)a)->domain, ((DomainCounter *)b)->domain);
+}
+
+DomainCounter parseDomainCounter(char *input) {
+    DomainCounter domainCounter;
+    char *token = strtok(input, " ");
+    domainCounter.counter = strtol(token, NULL, 10);
+    token = strtok(NULL, " ");
+    strcpy(domainCounter.domain, token);
+    return domainCounter;
+}
+
+// Функция для обработки данных и создания массива доменов счетчиков для каждого поддомена
+DomainCounter *subdomainVisits(char **cpdomains, int cpdomainsSize, int *returnSize) {
+    // Создание массива структур DomainCounter
+    DomainCounter *domainCounters = (DomainCounter *)malloc(sizeof(DomainCounter) * 1000);
+    int size = 0;
+
+    // Обход входного массива cpdomains
+    for (int i = 0; i < cpdomainsSize; i++) {
+        // Парсинг текущего элемента массива
+        DomainCounter currentCounter = parseDomainCounter(cpdomains[i]);
+        char *domain = currentCounter.domain;
+
+        // Поиск первой точки в домене
+        char *dot = strchr(domain, '.');
+        while (dot != NULL) {
+            // Увеличение счетчика домена в массиве
+            domainCounters[size].counter += currentCounter.counter;
+            // Копирование поддомена в массив
+            strcpy(domainCounters[size].domain, dot + 1);
+            size++;
+            // Поиск следующей точки
+            dot = strchr(dot + 1, '.');
+        }
+        // Увеличение счетчика верхнего уровня домена
+        domainCounters[size].counter += currentCounter.counter;
+        strcpy(domainCounters[size].domain, domain);
+        size++;
+    }
+
+    // Сортировка доменов по алфавиту
+    qsort(domainCounters, size, sizeof(DomainCounter), compareDomainCounters);
+
+    // Обновление указателя на размер массива и возврат массива
+    *returnSize = size;
+    return domainCounters;
+}
+
+void parsedDomainStat(vectorVoid *data, char *start, char *end) {
+    long counter = 0;
+
+    // Проходим с начала по конец для поиска чисел
+    for (char *i = start; i <= end; i++) {
+        if (isdigit(*i)) {
+            counter = strtol(i, &start, 10);
+            break;
+        }
+    }
+
+    char *endPtr = end;
+    // Проходим с конца по начало для поиска доменов
+    for (char *i = end; i >= start; i--) {
+        if (*i == '"') {
+            *endPtr = *i;
+            endPtr--;
+            continue;
+        }
+        if ((*i == '.') || (*i == ' ')) {
+            WordDescriptor word = {i + 1, endPtr};
+            DomainRecord domain = {counter, word};
+            pushBackV(data, &domain);
+        }
+        if (*i == ' ') {
+            break;
+        }
+    }
+}
+
+vectorVoid showVisitStats(char *stats) {
+    // Находим начало и конец данных
+    char *idxStart = strstr(stats, STATS_HEADER);
+    char *idxEnd = strstr(stats, STATS_END);
+
+    // Проверяем данные на корректность
+    if ((idxStart == NULL) || (idxEnd == NULL)) {
+        fprintf(stderr, "input data is invalid");
+        exit(1);
+    }
+
+    // Создаем вектор для хранения данных для всех доменов
+    vectorVoid data = createVectorV(0, sizeof(DomainRecord));
+
+    idxStart += strlen(STATS_HEADER); // Учитываем длину заголовка
+    idxEnd = idxEnd - strlen(STATS_END) + 1; // Учитываем длину конечной метки
+
+    char *tokenStart = idxStart;
+    int startToken = 0;
+    while (idxStart <= idxEnd) {
+        if (*idxStart != ' ') {
+            startToken = 1;
+        }
+
+        if (*idxStart == ',') {
+            // Парсим одну запись статистики
+            parsedDomainStat(&data, tokenStart, idxStart - 1);
+            startToken = 0;
+        }
+
+        idxStart++;
+
+        if (!startToken) {
+            tokenStart = idxStart;
+        }
+    }
+
+    // Парсинг последней записи статистики
+    parsedDomainStat(&data, tokenStart, idxStart - 1);
+
+    // Сортируем по названиям доменов
+    qsort(data.data, data.size, sizeof(DomainRecord), compareDomainCounterNames);
+
+    // Результирующий вектор
+    vectorVoid group = createVectorV(0, sizeof(DomainCounter));
+
+    DomainRecord domain;
+    DomainRecord prevDomain;
+    getVectorValueV(&data, 0, &prevDomain);
+
+    long totalSum = prevDomain.counter;
+    for (int i = 1; i < data.size + 1; i++) {
+        // Находим сумму у одинаковых элементов
+        if (i != data.size) {
+            getVectorValueV(&data, i, &domain);
+            if (compareDomainCounterNames(&prevDomain, &domain) == 0) {
+                totalSum += domain.counter;
+                continue;
+            }
+        }
+
+        // Заполняем структуру
+        DomainCounter domainCounter = {totalSum};
+        strcpy(domainCounter.domain, prevDomain.domain.begin); // Копируем домен
+        pushBackV(&group, &domainCounter);
+
+        prevDomain = domain;
+        totalSum = prevDomain.counter;
+    }
+
+    // Очищаем временный вектор
+    deleteVectorV(&data);
+
+    return group;
+}
+
+int submatricesNum(int *matrix, int n, int m) {
+    int (*tempMatrix)[m] = (int (*)[m]) matrix;
+
+    for (int i = 0; i < n; i++) {
+        int nums[m];
+        for (int k = 0; k < m; k++) {
+            nums[k] = 0;
+        }
+        for (int j = 0; j < m; j++) {
+            if (tempMatrix[i][j] == 0) {
+                nums[j] = 0;
+            } else {
+                if (j > 0) {
+                    nums[j] = nums[j - 1] + 1;
+                } else {
+                    nums[j] += 1;
+                }
+            }
+        }
+
+        for (int k = 0; k < m; k++) {
+            printf("%d\t", nums[k]);
+        }
+        printf("\n");
+    }
 }
