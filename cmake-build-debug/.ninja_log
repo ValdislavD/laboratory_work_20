@@ -1,0 +1,16 @@
+# ninja log v5
+6	72	7384341599048016	CMakeFiles/untitled28.dir/thread_io/test_thread_io.c.obj	eb72edfd25c8e950
+1	48	7384341812383525	CMakeFiles/untitled28.dir/main.c.obj	af8f734382409661
+8	74	7384341599077846	CMakeFiles/untitled28.dir/thread_io/thread_io.c.obj	e9c372237b985128
+48	109	7384341812953707	untitled28.exe	a2ac833864d9a62
+10	62	7384354908886872	CMakeFiles/untitled28.dir/task_2.c.obj	2f021c131b98245c
+4	83	7384354908951634	CMakeFiles/untitled28.dir/thread_io/test_thread_io.c.obj	eb72edfd25c8e950
+2	84	7384354909081460	CMakeFiles/untitled28.dir/task_1.c.obj	49cf12ee05fd03d5
+7	85	7384354909151628	CMakeFiles/untitled28.dir/thread_io/thread_io.c.obj	e9c372237b985128
+86	146	7384354909739908	untitled28.exe	ac0c8ba7080e18e0
+1	65	7384356848585997	CMakeFiles/untitled28.dir/thread_io/test_thread_io.c.obj	eb72edfd25c8e950
+66	130	7384356849211382	untitled28.exe	ac0c8ba7080e18e0
+1	79	7384361352116851	CMakeFiles/untitled28.dir/thread_io/test_thread_io.c.obj	eb72edfd25c8e950
+81	149	7384361352780924	untitled28.exe	ac0c8ba7080e18e0
+2	87	7384361525660063	CMakeFiles/untitled28.dir/thread_io/test_thread_io.c.obj	eb72edfd25c8e950
+87	145	7384361526225183	untitled28.exe	ac0c8ba7080e18e0

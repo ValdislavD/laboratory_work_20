@@ -1,0 +1,6 @@
+#ifndef UNTITLED28_TEST_THREAD_IO_H
+#define UNTITLED28_TEST_THREAD_IO_H
+
+void testThreadAll();
+
+#endif //UNTITLED28_TEST_THREAD_IO_H
