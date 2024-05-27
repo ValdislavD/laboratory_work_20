@@ -62,7 +62,7 @@ vectorVoid maxThree(int *nums, int len);
 
 char* strShuffle(char *symbols, int *indices, int len);
 
-size_t fileWithSmallerValues(char *fileInputPath, char *fileOutputPath, int n);
+void filterNumbers(const char *inputFileName, const char *outputFileName, int N);
 
 void outputFileInChunks(char *fileInputPath, int n);
 

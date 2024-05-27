@@ -496,34 +496,6 @@ char* strShuffle(char *symbols, int *indices, int len) {
     return res;
 }
 
-size_t fileWithSmallerValues(char *fileInputPath, char *fileOutputPath, int n) {
-    FILE *fp = fopen(fileInputPath, "r");
-    FILE *fd = fopen(fileOutputPath, "w+");
-
-    if (fp == NULL) {
-        fprintf(stderr, "Input file cannot be opened");
-        exit(1);
-    }
-    if (fd == NULL) {
-        fprintf(stderr, "Output file cannot be opened");
-        exit(1);
-    }
-
-    size_t counter = 0;
-
-    int val;
-    while (fscanf(fp, "%d", &val) > 0) {
-        if (val < n) {
-            fprintf(fd, "%d\n", val);
-            counter++;
-        }
-    }
-    fclose(fp);
-    fclose(fd);
-
-    return counter;
-}
-
 void outputFileInChunks(char *fileInputPath, int n) {
     char _fileReadBuffer[BUFFER_SIZE];
     FILE *fp = fopen(fileInputPath, "r");

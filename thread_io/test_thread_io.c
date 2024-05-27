@@ -227,6 +227,6 @@ void testThreadAll() {
     testAll_minStringNum();
     testAll_maxThree();
     testAll_strShuffle();
-    //testAll_fileWithSmallerValues();
-    //testAll_outputFileInChunks();
+    testAll_fileWithSmallerValues();
+    testAll_outputFileInChunks();
 }
