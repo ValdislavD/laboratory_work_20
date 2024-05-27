@@ -1,6 +1,5 @@
 #include <ctype.h>
 #include <string.h>
-#include <signal.h>
 #include <unistd.h>
 #include <conio.h>
 #include "thread_io.h"

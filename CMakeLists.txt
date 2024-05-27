@@ -13,4 +13,5 @@ add_executable(untitled28 task_1-2_4-8_test.c
         thread_io/vector.c
         task_9_/task_9.c
         task_10_/task_10.c
+        task_11.c
 )

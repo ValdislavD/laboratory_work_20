@@ -1,5 +1,4 @@
-//#include "../thread_io/thread_io.h."
-#include <stdio.h>
+/*#include <stdio.h>
 #include <stdlib.h>
 
 #define BUFFER_SIZE 256
@@ -45,4 +44,4 @@ int main(int argc, char *argv[]) {
     outputFileInChunks(fileInputPath, N);
 
     return EXIT_SUCCESS;
-}
+}*/
