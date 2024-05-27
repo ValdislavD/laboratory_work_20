@@ -28,7 +28,7 @@ typedef struct TreeItem {
     int idx;
 } TreeItem;
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 256
 
 int compareDomainCounterNames(const void *domainCounterPtr1, const void *domainCounterPtr2);
 
@@ -64,6 +64,6 @@ char* strShuffle(char *symbols, int *indices, int len);
 
 void filterNumbers(const char *inputFileName, const char *outputFileName, int N);
 
-void outputFileInChunks(char *fileInputPath, int n);
+void outputFileInChunks(const char *fileInputPath, int N);
 
 #endif //UNTITLED28_THREAD_IO_H

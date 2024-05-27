@@ -245,19 +245,6 @@ void testAll_fileWithSmallerValues() {
     remove("file_test2.txt");
 }
 
-void testAll_outputFileInChunks() {
-    int n = 15;
-    srand((unsigned) time(NULL));
-    FILE *fp = fopen ("file_test3.txt", "w+");
-
-    for (int i = 0; i < 1000; i++) {
-        fprintf(fp, "%d\n", i);
-    }
-    fclose(fp);
-
-    outputFileInChunks("file_test3.txt", n);
-}
-
 void testThreadAll() {
     testAll_fill_matrix();
     testAll_liveGame();
@@ -268,5 +255,4 @@ void testThreadAll() {
     testAll_maxThree();
     testAll_strShuffle();
     testAll_fileWithSmallerValues();
-    //testAll_outputFileInChunks();
 }

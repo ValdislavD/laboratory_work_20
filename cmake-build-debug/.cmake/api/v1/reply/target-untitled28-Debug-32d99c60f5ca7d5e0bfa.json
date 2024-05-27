@@ -58,7 +58,8 @@
 				4,
 				5,
 				7,
-				8
+				8,
+				9
 			]
 		}
 	],
@@ -101,7 +102,8 @@
 				4,
 				5,
 				7,
-				8
+				8,
+				9
 			]
 		},
 		{
@@ -118,7 +120,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "task_1-2_4-7_test.c",
+			"path" : "task_1-2_4-8_test.c",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -165,6 +167,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "task_9_/task_9.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "task_10_/task_10.c",
 			"sourceGroupIndex" : 0
 		}
 	],

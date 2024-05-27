@@ -521,30 +521,31 @@ void filterNumbers(const char *inputFileName, const char *outputFileName, int N)
     fclose(outputFile);
 }
 
-void outputFileInChunks(char *fileInputPath, int n) {
-    char _fileReadBuffer[BUFFER_SIZE];
-    FILE *fp = fopen(fileInputPath, "r");
-
-    if (fp == NULL) {
-        fprintf(stderr, "Input file cannot be opened");
-        exit(1);
+void outputFileInChunks(const char *fileInputPath, int N) {
+    FILE *fileInput = fopen(fileInputPath, "r");
+    if (fileInput == NULL) {
+        fprintf(stderr, "Cannot open input file: %s\n", fileInputPath);
+        exit(EXIT_FAILURE);
     }
 
-    int counter = n;
-    while (fgets(_fileReadBuffer, sizeof(_fileReadBuffer), fp) != NULL) {
-        printf("%s", _fileReadBuffer);
+    char buffer[BUFFER_SIZE];
+    int lineCount = 0;
 
-        if (--counter == 0) {
-            counter = n;
-            printf("Press Ctrl+C to continue...");
+    while (fgets(buffer, BUFFER_SIZE, fileInput) != NULL) {
+        printf("%s", buffer);
+        lineCount++;
+
+        if (lineCount == N) {
+            lineCount = 0;
+            printf("Press Ctrl+C to continue...\n");
             while (1) {
-                if (getch() == 3) {
-                    printf("\r                           \r");
+                if (getchar() == 3) {  // Check for Ctrl+C
+                    printf("\n");
                     break;
                 }
             }
-
         }
     }
-    fclose(fp);
+
+    fclose(fileInput);
 }
